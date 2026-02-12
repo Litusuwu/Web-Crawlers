@@ -15,8 +15,8 @@ The rate limits are monitored in the response header:
 
 Rate limits per plan:
 
-|User with OAuth (Dev)| Commercial Use|
-|---------------------|---------------|
+| User without Auth | User with OAuth (Dev)| Commercial Use|
+|-----------------|---------------------|---------------|
 
 
 If we want, maybe we can submit a ticket to reddit to get the commercial use that have higher limits in his dev page:
