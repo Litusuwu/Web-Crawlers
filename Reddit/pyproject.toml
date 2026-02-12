@@ -1,0 +1,28 @@
+[project]
+name = "reddit-scraper"
+version = "0.1.0"
+description = "A Python package for scraping Reddit data with OAuth2 authentication and rate limiting"
+readme = "README.md"
+authors = [
+    { name = "Litus", email = "zegarraward@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "aiohttp>=3.13.3",
+    "praw>=7.8.1",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+]
+
+[project.scripts]
+reddit-scraper = "reddit_scraper:main"
+
+[build-system]
+requires = ["uv_build>=0.10.2,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.15.0",
+]
