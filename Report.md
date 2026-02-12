@@ -4,9 +4,8 @@ Traffic not using OAuth or login
 credentials will be blocked (no default rate limit also).
 
 Free acces rate limits:
-2000 messages per day per recipient
-3000 messages per day total
 100 queries per minute per OAuth
+10 queries per minute without OAuth
 
 The rate limits are monitored in the response header:
 
