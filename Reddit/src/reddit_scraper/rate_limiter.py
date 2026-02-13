@@ -1,7 +1,7 @@
 """Rate limiter for Reddit API requests."""
+
 import time
 from collections import deque
-from typing import Optional
 
 
 class RateLimiter:
@@ -22,7 +22,7 @@ class RateLimiter:
         self.time_window = time_window
         self.requests: deque[float] = deque()
 
-    def wait_if_needed(self) -> Optional[float]:
+    def wait_if_needed(self) -> float | None:
         """
         Wait if rate limit would be exceeded.
 

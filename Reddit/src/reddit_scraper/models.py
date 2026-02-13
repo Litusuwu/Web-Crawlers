@@ -1,20 +1,18 @@
 """Data models for Reddit scraper."""
+
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class RedditPost(BaseModel):
     """Model for a Reddit post/submission."""
-    
-    model_config = ConfigDict(
-        json_encoders={datetime: lambda v: v.isoformat()}
-    )
-    
+
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+
     id: str
     title: str
-    body: Optional[str] = None
+    body: str | None = None
     author: str
     timestamp: datetime
     subreddit: str
@@ -24,16 +22,14 @@ class RedditPost(BaseModel):
     media_urls: list[str] = Field(default_factory=list)
     permalink: str
     is_self: bool = False
-    link_flair_text: Optional[str] = None
+    link_flair_text: str | None = None
 
 
 class RedditComment(BaseModel):
     """Model for a Reddit comment."""
-    
-    model_config = ConfigDict(
-        json_encoders={datetime: lambda v: v.isoformat()}
-    )
-    
+
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+
     id: str
     body: str
     author: str
@@ -47,11 +43,9 @@ class RedditComment(BaseModel):
 
 class RedditUser(BaseModel):
     """Model for a Reddit user."""
-    
-    model_config = ConfigDict(
-        json_encoders={datetime: lambda v: v.isoformat()}
-    )
-    
+
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
+
     username: str
     created_utc: datetime
     comment_karma: int = 0

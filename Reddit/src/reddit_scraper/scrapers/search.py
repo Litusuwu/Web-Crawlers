@@ -1,7 +1,5 @@
 """Search scraper for Reddit."""
 
-from typing import Optional
-
 import praw
 
 from ..api_client import RedditAPIClient
@@ -113,7 +111,7 @@ class SearchScraper:
         return results
 
     def search_mentions(
-        self, name: str, limit: int = 100, subreddits: Optional[list[str]] = None
+        self, name: str, limit: int = 100, subreddits: list[str] | None = None
     ) -> list[RedditPost]:
         """
         Search for mentions of a person/name across Reddit.

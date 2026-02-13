@@ -140,6 +140,14 @@ with open('results.json', 'w') as f:
 - ✅ Structured data models (Pydantic)
 - ✅ Free (official Reddit API)
 
+## 📚 Documentation
+
+- **[ENDPOINTS.md](ENDPOINTS.md)** - Complete reference for all Reddit API endpoints
+- **[Report.md](../Report.md)** - Research report on Reddit API (English)
+- **[.env.example](.env.example)** - Example environment configuration
+
+Run `make help` to see all available commands.
+
 ---
 
 ## 📦 Installation

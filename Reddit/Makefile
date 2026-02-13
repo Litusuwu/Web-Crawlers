@@ -24,10 +24,15 @@ help:
 	@echo "  make check        - Run both lint and tests"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make run-search   - Search for John Cena"
-	@echo "  make run-user     - Extract user data"
-	@echo "  make run-subs     - Search multiple subreddits"
-	@echo "  make run-all      - Run all examples"
+	@echo "  make demo         - Demo without API credentials (mock data)"
+	@echo "  make test-public  - Test public API (NO credentials needed!)"
+	@echo "  make show-json    - Show JSON request/response examples"
+	@echo "  make show-images  - Show image URL extraction"
+	@echo "  make get-endpoints - Get all endpoint responses (saved to out/)"
+	@echo "  make run-search   - Search for John Cena (requires OAuth)"
+	@echo "  make run-user     - Extract user data (requires OAuth)"
+	@echo "  make run-subs     - Search multiple subreddits (requires OAuth)"
+	@echo "  make run-all      - Run all examples (requires OAuth)"
 	@echo ""
 	@echo "Cleanup:"
 	@echo "  make clean        - Remove cache and temp files"
@@ -91,6 +96,26 @@ check: lint test
 	@echo "✓ All checks passed!"
 
 # Run examples
+demo:
+	@echo "Running demo without API credentials..."
+	uv run python demo_without_api.py
+
+test-public:
+	@echo "Testing Reddit public API (no OAuth needed)..."
+	uv run python test_public_api.py
+
+show-json:
+	@echo "Showing JSON request/response examples..."
+	uv run python show_json_examples.py
+
+show-images:
+	@echo "Showing image URL extraction examples..."
+	uv run python show_image_urls.py
+
+get-endpoints:
+	@echo "Getting all endpoint responses..."
+	uv run python get_all_endpoints.py
+
 run-search:
 	@echo "Running search_by_name.py (John Cena search)..."
 	uv run python examples/search_by_name.py

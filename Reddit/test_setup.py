@@ -15,12 +15,12 @@ def main():
     print("=" * 60)
     print("Reddit Scraper - Connection Test")
     print("=" * 60)
-    
+
     try:
         print("\n1. Loading credentials from .env file...")
         client = RedditAPIClient()
         print("   ✓ Credentials loaded")
-        
+
         print("\n2. Testing Reddit API connection...")
         if client.test_connection():
             print("   ✓ Connection successful!")
@@ -31,18 +31,18 @@ def main():
             print("  - REDDIT_CLIENT_ID is set")
             print("  - REDDIT_CLIENT_SECRET is set")
             sys.exit(1)
-        
-        print(f"\n3. API Status:")
+
+        print("\n3. API Status:")
         print(f"   Remaining requests: {client.get_remaining_requests()}/100")
         print(f"   User agent: {client.user_agent}")
-        
+
         print("\n" + "=" * 60)
         print("✓ Setup Complete! You're ready to scrape Reddit.")
         print("=" * 60)
         print("\nNext steps:")
         print("  - Run: uv run python examples/search_by_name.py")
         print("  - Or check QUICKSTART.md for more examples")
-        
+
     except ValueError as e:
         print(f"\n✗ Error: {e}")
         print("\nSetup instructions:")
