@@ -1,84 +1,77 @@
 # TikTok
 
-keyword search for public videos. Restricted to approved academic/enterprise researchers. Free but highly selective.
+## Prerequisites
 
-Evaluate all available TikTok official APIs:
-Research API: keyword search for public videos. Restricted to approved academic/enterprise researchers. Free but highly selective.
-Display API: /user/info/, /video/list/, 600 calls/min. Requires user auth. Not useful for general content discovery.
-Data Portability API: user's own data only.
-Commercial Content API: ad library queries (EU only).
+The steps to obtain a **Client Key** and **Client Secret**, which are required items to access any API, are:
 
-Document approval process, timeline, and likelihood of approval for a commercial threat monitoring product.
+> Sign up on the TikTok Dev website
 
-## Pasos previos
-
-
-Los pasos a seguir para obtener un **Client Key** y **Client Secret**, los cuales son items necesarios para acceder a cualquier API, son:
-
-> Registrarse en la web de TikTok Dev
-
-> Crear una organizacion (o individual)
+> Create an organization (or individual)
 >>![Create organization](/imgs/SS7.png)
 
-> Dirigirse a 'Manage Apps' y crear un App
+> Go to 'Manage Apps' and create an App
 >>![Developer Portal](/imgs/SS8.png)
 >>![Create App](/imgs/SS9.png)
 
-> Despues de crear el App, se tendrá que aplicar para review de TikTok para su aprobación dependiendo del API al que nosotros queramos acceder, las preguntas son:
+> After creating the App, you will need to apply for TikTok review for approval depending on which API we want to access. The questions are:
 
 > Basic information 
 >![Basic Information](/imgs/SS10.png)
 Basic information 2
 >![Basic Information](/imgs/SS11.png)
-> App review (Describir el producto y un demo)
+> App review (Describe the product and a demo)
 >![App Review](/imgs/SS11.png)
-> Products (APIs que necesita tu APP)
+> Products (APIs your app needs)
 >![Products](/imgs/SS13.png)
-> Ejemplo de Products 
+> Products example 
 > ![Example 1 Products](/imgs/SS14.png)
-> Ejemplo de Products 2
+> Products example 2
 >![Example 2 Products](/imgs/SS15.png)
 
 
 ### <u>Research API:</u>
 
-Es un API dirigido a la comunidad académica, y bastante restringido a ella, no esta dirigida a enterprises debido a que pasa por un proceso riguroso de selección; similar a Reddit, tienes que enviar un ticket con la aplicación/investigación a realizar y esperar una respuesta de parte del equipo de TikTok para poder recien emplear el uso del API, el cual brinda tambien rate-limits moderados en su uso.
+It is an API aimed at the academic community, and quite restricted to it; it is not intended for enterprises because it goes through a rigorous selection process. Similar to Reddit, you have to submit a ticket with the application/research to be performed and wait for a response from the TikTok team before you can start using the API, which also provides moderate rate limits.
 
 * **Ref:** https://developers.tiktok.com/doc/research-api-get-started?enter_method=left_navigation.
 
-Los pasos a seguir son:
+The steps are:
 
-* Aplicar al Research API mediante una solicitud con los pasos previos
-* Una vez aprobada tu solicitud por TikTok, se te generará un cliente de research, este podras ver todos los proyectos/apps/investigaciones aprobadas de parte de TikTok para el Research API; cada uno esta asociado a un **Client Key** y **Client Secret** que serán necesarios para conectarse al Research API endpoints.
-* Una vez obtenidos estos 2, podras generar un **Client Access Token** con el cual se tendrá acceso al API de ResearchAPI.
+* Apply to the Research API through a request following the prerequisite steps
+* Once your request is approved by TikTok, a research client will be generated for you. In it you will be able to see all the projects/apps/research approved by TikTok for the Research API; each one is associated with a **Client Key** and **Client Secret** that will be required to connect to the Research API endpoints.
+* Once you have these two, you can generate a **Client Access Token** with which you will have access to the Research API.
 
 >>>![TK Instructions Basic](/imgs/SS16.png)
 
-* El estimado para obtener respuesta del Research API son <u>4 semanas o 1 mes calendario.</u>
+* The estimated time to receive a response for the Research API is <u>4 weeks or 1 calendar month.</u>
 
-* Los requerimientos estan justo debajo, considerando que Fuzzy realizará Web Scrapping y se lucrará de ello, es muy posible que no se pueda o acepten en su programa de TikTok research (como tal tampoco Fuzzy es researcher)
+* The requirements are right below; considering that Fuzzy will do web scraping and will profit from it, it is very likely that it will not be possible or that they will not accept it into TikTok's research program (also, Fuzzy is not a researcher as such)
 
 >>> ![TK Instructions](/imgs/SS6.png)
 
 
 ### <u>Display API</u>
 
-Este API no es para el use-case de Fuzzy, debido a que este sirve principalmente con OAuth para self-profile; para mostrar información o posts de un profile propio, esto principalmente parece que esta hecho para promocionarse a uno mismo en una landing o content creator social difussing, un use case se puede ver como en la imagen siguiente:
+This API is not for Fuzzy's use case, because it mainly works with OAuth for self-profile; to display information or posts from your own profile. This seems primarily made for promoting yourself on a landing page or for content creator social diffusing; a use case can be seen as in the following image:
 
 ![TK Display Information](/imgs/SS17.png)
 
-Si en un futuro se quisiera hacer uso de este, el procedimiento es el que le sigue con **Pasos previos**, solo que se especifica el **Login Kit** en el apartado de **Products**.
+If in the future we wanted to use this, the procedure is the same as in **Prerequisites**, but you specify **Login Kit** in the **Products** section.
 
 ## Data Portability API & Commercial Content API
 
-Mismo caso que Display API, está fuera del scope. Sirve para transferir datos como nombres, usuarios entre tiktok y aplicaciones de terceros con autorización del usuario dueño de la cuenta, no está para el scope de Fuzzy, puesto que Fuzzy busca descubrir keywords y navegar por la web.
+Same case as Display API; it is out of scope. It is used to transfer data such as names and usernames between TikTok and third-party applications with authorization from the account owner, it is not in scope for Fuzzy, since Fuzzy seeks to discover keywords and browse the web.
 
-De parte de Commercial Content API, realmente lo unico que es su usecase es para evaluar los ADs que existen, esto podría servir pero a la vez no, puesto que no cubre el scope para lo que está pensado Fuzzy.
+On the Commercial Content API side, the only real use case is to evaluate the ads that exist. This could be useful, but also not, since it does not cover the scope of what Fuzzy is designed for.
 
 ## Personal Thoughts
 
-Tras realizar una revisión de la documentación de las APIs oficiales de Tk, y revisar cautelosamente sus T&C; TikTok no aprueba el uso de ningún API (Research API tampoco) para scrapear sea para vigilancia o uso comercial, si llega a ser de lucro no dejará scrapear.
+After reviewing the documentation for TikTok's official APIs and carefully reviewing its T&Cs; TikTok does not approve the use of any API (Research API included) to scrape, whether for surveillance or commercial use. If it is for profit, it will not allow scraping.
 
-## Evaluate third-party scraping services
+## What says TK about Web Scrapping
 
+![TK Statement 1](/imgs/SS18.png)
+![TK Statement 2](/imgs/SS19.png)
+
+**TK explicitly prohibits "automated scripts to collect information".**
 
