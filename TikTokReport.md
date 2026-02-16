@@ -68,10 +68,59 @@ On the Commercial Content API side, the only real use case is to evaluate the ad
 
 After reviewing the documentation for TikTok's official APIs and carefully reviewing its T&Cs; TikTok does not approve the use of any API (Research API included) to scrape, whether for surveillance or commercial use. If it is for profit, it will not allow scraping.
 
-## What says TK about Web Scrapping
+## What TikTok says about Web Scraping
 
 ![TK Statement 1](/imgs/SS18.png)
 ![TK Statement 2](/imgs/SS19.png)
 
 **TK explicitly prohibits "automated scripts to collect information".**
 
+## TikTokApi : David Teather
+
+This is a repository that is viable due to its constant updates. It is open source and has a beneficial update frequency considering that its last update was very recent (February 11). This is mainly because TikTok has one of the most complex and well-implemented anti-bot systems.
+
+It is based on simulation with a headless web browser in Playwright. This is good mainly because it runs the JS engine to generate the signatures TikTok requires; but at the same time, running a web browser per request consumes a lot of compute resources, considering it is Chromium (high RAM and CPU usage).
+
+The `davidteather/TikTok-Api` repository (V7.2.2 – Feb 2026) is still technically viable thanks to:
+	•	Mandatory use of Playwright (real browser automation).
+	•	Advanced session management (SessionFactories).
+	•	Native proxy integration (ProxyProviders).
+	•	Concurrency via asyncio.
+
+However:
+	•	Requires real execution of TikTok's JS engine.
+	•	Depends on dynamic signatures: msToken, X-Bogus, X-Gnarly.
+	•	High CPU and RAM consumption.
+
+Required architecture (minimum viable)
+
+A monolithic script like the one in the repository is not viable. You need:
+
+```
+FastAPI (control API)
+        ↓
+Redis (broker)
+        ↓
+Celery workers (Playwright)
+        ↓
+Signature microservice (X-Bogus)
+        ↓
+Smart proxy layer
+```
+
+Key elements:
+
+Celery with --max-tasks-per-child to avoid memory leaks.
+Browser Contexts instead of full instances.
+Distributed rate limiting (Token Bucket).
+Mixed proxy pool (residential + mobile).
+Exponential backoff for retries.
+Monitoring with Flower + structured logging.
+
+Asynchronous operations are needed mainly because all of this would run slowly, with latencies ranging from 3–10 seconds depending on the profile, because the repository has to load tracking scripts and, when simulating inside a web browser, you must wait for dynamic rendering (TikTok's infinite scroll nature).
+
+It is important to keep in mind that TikTok implements one of the most advanced API protection systems in the tech industry. It focuses on 3 parameters: **msToken**, **X-Bogus**, and **X-Gnarly**. If these values are not provided in the request, TikTok sends an instant 403 error. **msToken** is a login token that validates the legitimacy of an interaction (user session); it has been found that this token rotates every 14 seconds, which quickly invalidates static sessions. **X-Bogus**: TikTok uses a Virtual Machine (VM) written in JavaScript and highly obfuscated that runs in the browser. This VM takes the full URL, the User-Agent, and other environment data (such as screen resolution or device fingerprint) to generate the X-Bogus value. **X-Gnarly** is an additional protection layer that often appears in the headers of HTTP requests, complementing X-Bogus.
+
+Regarding legal terms, it is the same as with Reddit or IG, since there are several cases such as (hiQ vs LinkedIn, TikTok vs Garland) with lawsuits over data scraping, regardless of whether the tool is open source or private; in the European Union as well, there are fines of 200,000 euros for scraping without notification (CNIL 2025).
+
+Due to the complexity involved in scaling a well-functioning TikTok API solution, it is recommended to first evaluate third-party service options before planning an architecture that supports more than 100,000 users with this open-source solution for Fuzzy.

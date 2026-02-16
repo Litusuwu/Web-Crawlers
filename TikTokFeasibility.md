@@ -139,3 +139,34 @@ TikTok/
 ```
 
 Full technical report: [`TikTokHeadlessScraping.md`](../TikTokHeadlessScraping.md)
+
+
+. World Models (2018)
+
+Resumen: Introduce un agente compuesto por un modelo de visión (VAE) que comprime cuadros de imagen en vectores latentes, y un modelo de memoria (RNN) que predice estados futuros basándose en acciones previas.
+
+Relación con el Método: Es el fundamento teórico que demuestra que un agente puede entrenarse completamente dentro de su propio "sueño" (simulación interna) y transferir ese aprendizaje al entorno real con éxito.
+
+2. PlaNet: Deep Planning Network (2019)
+
+Resumen: Propone el Recurrent State-Space Model (RSSM), que combina componentes deterministas y estocásticos para capturar la incertidumbre en predicciones de múltiples pasos.
+
+Relación con el Problema/Método: Establece el uso de planificación online (MPC) en el espacio latente sin necesidad de reconstruir imágenes, lo que aumenta drásticamente la eficiencia de datos frente a métodos libres de modelo.
+
+3. DreamerV1 (2020)
+
+Resumen: Evoluciona PlaNet al introducir un actor y un crítico que se entrenan puramente mediante imaginación latente, propagando gradientes analíticos a través de las trayectorias del modelo.
+
+Relación con el Problema/Método: Permite resolver tareas de largo horizonte (como locomoción compleja) de manera más eficiente que la planificación online pura, sentando las bases del aprendizaje de políticas en espacios latentes.
+
+4. DreamerV2 (2021)
+
+Resumen: Introduce el uso de variables latentes categóricas (discretas) en lugar de gaussianas y una técnica de balanceo de la divergencia KL para regularizar el aprendizaje.
+
+Relación con el Problema/Método: Fue el primer algoritmo basado en modelos de mundo en alcanzar un rendimiento de nivel humano en el benchmark de Atari, demostrando que la discretización latente es clave para la robustez en entornos visuales complejos.
+
+5. DreamerV3 (2023) - Artículo por Replicar
+
+Resumen: Algoritmo generalista que utiliza técnicas de robustez como la transformación symlog y la normalización de retornos por percentiles para operar con hiperparámetros fijos en diversos dominios.
+
+Relación con el Problema/Método: Es el primer algoritmo que logra recolectar diamantes en Minecraft desde cero sin datos humanos, estableciendo el estado del arte en generalidad para agentes inteligentes.
