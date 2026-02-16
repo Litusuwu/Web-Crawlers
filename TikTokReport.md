@@ -81,6 +81,10 @@ This is a repository that is viable due to its constant updates. It is open sour
 
 It is based on simulation with a headless web browser in Playwright. This is good mainly because it runs the JS engine to generate the signatures TikTok requires; but at the same time, running a web browser per request consumes a lot of compute resources, considering it is Chromium (high RAM and CPU usage).
 
+Also it has a documentation about how to use the repository code, its extensive and complex in a technical level, this is because of the nature of TK anti-bot system.
+
+![Docs OpenSource](/imgs/SS20.png)
+
 The `davidteather/TikTok-Api` repository (V7.2.2 – Feb 2026) is still technically viable thanks to:
 	•	Mandatory use of Playwright (real browser automation).
 	•	Advanced session management (SessionFactories).
@@ -124,3 +128,4 @@ It is important to keep in mind that TikTok implements one of the most advanced 
 Regarding legal terms, it is the same as with Reddit or IG, since there are several cases such as (hiQ vs LinkedIn, TikTok vs Garland) with lawsuits over data scraping, regardless of whether the tool is open source or private; in the European Union as well, there are fines of 200,000 euros for scraping without notification (CNIL 2025).
 
 Due to the complexity involved in scaling a well-functioning TikTok API solution, it is recommended to first evaluate third-party service options before planning an architecture that supports more than 100,000 users with this open-source solution for Fuzzy.
+
