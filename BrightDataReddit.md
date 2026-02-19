@@ -2055,6 +2055,17 @@ Price starts at: $0.0015 Per record
 
 We have only 2$ free tier without card, but with registering a card, Bright Data gives 5$ more.
 
+# Comparisson with Reddit API Official
 
+I think that the Reddit Official API is good because is free, but the mainly problem in the Fuzzy core is that 100 requests per 10 minuts its not viable with a 100,000 users amount. Also if we are not authenticated it will probably ban us from our DNS domain, even if we use AWS to scrap it.
 
+# Plus from Bright Data
 
+It appears that BrightData supports asynchronous data processing; for example, we can preload some queries or run them in the background, store them in various types of cloud, and thus optimize future flows that Fuzzy App may have.
+
+![Async Option](/imgs/AsyncOption.png)
+
+Evidence about the multi-cloud storage integration support.
+<br>
+
+![Cloud Support](/imgs/CloudSupport.png)
