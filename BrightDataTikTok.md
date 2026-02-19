@@ -1099,6 +1099,51 @@ Supported by TikTok Posts and TikTok Shop.
 
 We have only 2$ free tier without card, but with registering a card, Bright Data gives 5$ more.
 
+# Comparisson with EnsembleData
 
+The prices of EnsembleData are the following ones considering his units cost system:
+<center>
 
+![Ensemble Data TK](/imgs/EnsembleDataTikTok.png)
 
+</center>
+
+Considering the Gold Plan that gaves us 25000 units per 800 USD, comparing it with the plan of 1000 USD what gaves us 1 million records of data:
+
+<center>
+
+![Ensemble Data Pricing](/imgs/PricesEnsembleData.png)
+
+</center>
+
+<center>
+
+![Bright Data Pricing](/imgs/PricesBrightData.png)
+
+</center>
+
+If we made the bills, we saw this results:
+
+<center>
+
+|Variable|Ensemble Data|BrightData|
+|------|-------|-----------|
+|Monthly Cost|$800|$1000|
+|Volumen Included|25000 units|1,000,000 records|
+|Cost per Unit/Record|$0.032 per unit|$0.001 per record|
+|Transforming to Records|$0.0016 per record| $0.001 per record|
+
+</center>
+
+Also comparing with the scope:
+
+<center>
+
+| Metric | Variable Ensemble Data (Silver) | Bright Data ($500 Plan) |
+|---|---|---|
+| Monthly Cost | $400 | $500 |
+| Included Volume | 11,000 units | 510,000 records |
+| Cost per Unit/Record | $0.036 per unit | $0.00098 per record |
+| Estimated Records (1u = 20r) | 220,000 records | 510,000 records |
+
+</center>
