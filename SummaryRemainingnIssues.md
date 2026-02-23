@@ -31,7 +31,3 @@ To minimize risk and maximize ROI, we will follow a three-phase rollout:
 - **Phase 1 (Immediate):** Activate **Option B** (Reddit and TikTok) using BrightData’s structured APIs to capture "low-hanging fruit" impersonations.
 - **Phase 2 (Short-term):** Deploy the **Instagram Discovery Layer** to bridge the keyword gap and begin automated deep-scans of flagged profiles.
 - **Phase 3 (Long-term):** Monitor **SerpAPI** usage. Once we consistently hit the 15,000 search/month cap, we will consolidate Google and YouTube into BrightData to achieve better per-record economics.
-
----
-
-**Would you like me to generate a finalized "Consolidated Cost Table" that includes these specific discovery tools for your final appendix?**
