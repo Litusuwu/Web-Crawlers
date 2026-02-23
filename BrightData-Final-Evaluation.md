@@ -101,12 +101,12 @@
 ### New Sources: Can BrightData Support Them?
 
 #### Instagram:
-I dont think is the best way
+**Hybrid approach (resolved):** BrightData's Instagram API alone is insufficient for watchdog use cases because it requires a known profile URL — it cannot discover accounts by keyword. The solution is a **Discovery-First** layer using a specialized social search tool (e.g., **RocketAPI** or **SociaVault**, ~$80–$100/mo) to perform keyword searches for brand name variations, identify matching profile URLs, and feed those into BrightData's Instagram Profile API for structured data extraction.
 
 - **Data quality: Good.** Structured JSON with 100% fill rates on core fields (`url`, `date_posted`, `likes`, `num_comments`, `post_id`, `is_verified`, `followers`).
 - Supports Profiles, Posts, Reels, and Comments via dedicated endpoints.
 - Response time: 5–9 seconds per input (synchronous); async available.
-- **Key limitation:** No keyword-based search. Discovery requires a known profile URL or post URL. For Fuzzy watchdog events based on profile monitoring, this is workable.
+- **Discovery gap — mitigated:** No keyword-based search natively. Solved via the Social Discovery layer (RocketAPI/SociaVault) which identifies profile URLs for downstream BrightData extraction of `follower_count`, `is_verified`, `recent_posts`, etc.
 - **Image/media URLs expire in 2–3 days** due to Instagram signed CDN policy. Media must be downloaded immediately after scrape if persistence is needed.
 - Comments capped at 15 most recent per post.
 
@@ -120,11 +120,11 @@ Yes
 
 #### Reddit
 
-Yes
+Yes — **hybrid model confirmed.**
 
 - **Data quality: Good.** Full post body, comments with replies, user info, subreddit metadata, related posts — all returned in a single record.
 - Supports **keyword-based discovery** across all posts. Subreddit-level discovery is available. Response time ~18s per input.
-- **However:** Reddit has a usable free official API (OAuth2, 100 req/10 min). For Fuzzy's use case at scale (100k+ users), the free API is **not viable** — 100 req/10 min creates a hard ceiling that BrightData sidesteps.
+- **Hybrid model:** BrightData is the **primary engine for bulk discovery** across subreddits (bypassing the 100 req/10 min OAuth2 ceiling). The **free official Reddit API** is retained for high-priority, real-time monitoring of specific known threads where low latency matters. This ensures 100% coverage without being throttled at scale.
 
 ---
 
@@ -145,12 +145,13 @@ Keep SerpAPI
 - BrightData does not have a dedicated YouTube structured dataset API in the same tier — it would require Scraping Browser, adding complexity and cost.
 
 #### GoFundMe
-Consider moving to BrightData or manage a proxy rotation, captcha handler (do the scraper infrastructure, not just the script)
+**Confirmed: migrate to BrightData Scraping Browser.**
 
-- **Current pain point:** Puppeteer on Lambda is fragile — requires manual proxy rotation, CAPTCHA handling, and breaks when GoFundMe updates its DOM.
-- BrightData Scraper Studio (Self-Healing technology) could further reduce maintenance when GoFundMe UI changes.
+- **Current pain point:** Puppeteer on Lambda is fragile — requires manual proxy rotation, CAPTCHA handling, and breaks when GoFundMe updates its DOM. This results in recurring engineering overhead for weekly fixes.
+- **Migration path:** Only the WebSocket `connect()` URL in the existing Puppeteer script needs to change — BrightData's Scraping Browser is a drop-in replacement that adds self-healing technology, automated proxy rotation, and CAPTCHA handling.
+- BrightData Scraper Studio (Self-Healing technology) further reduces maintenance when GoFundMe UI changes.
 - **Migration effort: Low** — only the WebSocket connection URL in the existing Puppeteer script needs to change.
-- **Cost delta:** Lambda ~$20/mo → BD Scraping Browser ~$100–$200/mo at 5k/day. At lower current GoFundMe query volumes (~500/day), cost delta is smaller (~$15–$30/mo).
+- **Cost delta:** Lambda ~$20/mo → BD Scraping Browser ~$100/mo. The increase (~$80/mo) is justified by the elimination of recurring engineering hours for maintenance.
 
 ---
 
@@ -174,15 +175,15 @@ Consider moving to BrightData or manage a proxy rotation, captcha handler (do th
 
 ### Known Limitations
 
-| Limitation | Affected Source | Impapct |
+| Limitation | Affected Source | Impact |
 |-----------|----------------|--------|
-| No keyword search | Instagram | Medium: must know profile URL in advance |
+| No native keyword search | Instagram | **Mitigated:** Social Discovery layer (RocketAPI/SociaVault, ~$80–$100/mo) performs keyword search and feeds profile URLs to BrightData |
 | Signed media URLs expire 2–3 days | Instagram | High: must download/store media at scrape time |
 | 15-comment cap | Instagram Comments | Low for watchdog (recent comments only) |
 | High latency (24–58s) on some endpoints | TikTok | Medium: async mode recommended |
 | Free tier: 100 records total | All BrightData | Only for initial testing |
-| Reddit official API: 100 req/10 min | Reddit | High at scale, BrightData bypasses this |
-| GoFundMe: no native scraper | GoFundMe | LoW: Scraping Browser covers it |
+| Reddit official API: 100 req/10 min | Reddit | High at scale — mitigated: BrightData handles bulk; free API retained for real-time priority threads |
+| GoFundMe: fragile Puppeteer on Lambda | GoFundMe | **Resolved:** migrating to BrightData Scraping Browser |
 
 ---
 
@@ -193,8 +194,8 @@ Consider moving to BrightData or manage a proxy rotation, captcha handler (do th
 | **Google Search** | SerpAPI (keep) | Cheaper, purpose-built, production-stable |
 | **Google Images** | SerpAPI (keep) | Bundled, no benefit to switch |
 | **YouTube / Shorts** | SerpAPI (keep) | Dedicated engine, no BD equivalent |
-| **GoFundMe** | BrightData Scraping Browser (optional upgrade) | Reduces maintenance; migrate if reliability is an issue |
-| **Instagram** | BrightData (adopt) | Only viable managed solution; good data quality |
+| **GoFundMe** | BrightData Scraping Browser (**confirmed migration**) | Eliminates fragile Lambda/Puppeteer setup; low-effort swap of WebSocket URL; ~$100/mo justified by reduced engineering overhead |
+| **Instagram** | BrightData + Social Discovery layer (adopt) | BrightData handles deep extraction; RocketAPI/SociaVault (~$80–$100/mo) bridges the keyword discovery gap |
 | **TikTok** | BrightData (adopt) | Keyword search works; use async for performance |
 | **Reddit** | BrightData (adopt) | Free API not scalable; BD is cost-effective at scale |
 
@@ -205,22 +206,24 @@ Consider moving to BrightData or manage a proxy rotation, captcha handler (do th
 | Layer | Cost |
 |-------|------|
 | SerpAPI Production Plan (Google + Images + YouTube, all bundled) | **$150/mo** |
+| Social Discovery Layer — Instagram keyword search (RocketAPI/SociaVault) | **~$80–$100/mo** |
 | BrightData — Instagram (150k records/mo @ $0.0015) | **$225/mo** |
 | BrightData — TikTok (150k records/mo @ $0.0015) | **$225/mo** |
 | BrightData — Reddit (150k records/mo @ $0.0015) | **$225/mo** |
-| Lambda — GoFundMe (Puppeteer, current) | **~$20/mo** |
-| **Total** | **~$845/mo** |
+| BrightData — GoFundMe Scraping Browser (confirmed migration) | **~$100/mo** |
+| **Total** | **~$1,005–$1,025/mo** |
 
 #### At scaled volume (5,000 queries/day per source — SerpAPI 15k/mo cap exceeded):
 
 | Layer | Cost |
 |-------|------|
 | SerpAPI custom/enterprise tier (Google + Images + YouTube at 450k/mo) | **~$500–$750/mo est.** |
+| Social Discovery Layer — Instagram keyword search (RocketAPI/SociaVault) | **~$80–$100/mo** |
 | BrightData — Instagram (150k records/mo) | **$225/mo** |
 | BrightData — TikTok (150k records/mo) | **$225/mo** |
 | BrightData — Reddit (150k records/mo) | **$225/mo** |
-| Lambda — GoFundMe (current) | **~$20/mo** |
-| **Total** | **~$1,195–$1,445/mo** |
+| BrightData — GoFundMe Scraping Browser (confirmed migration) | **~$100/mo** |
+| **Total** | **~$1,355–$1,625/mo** |
 
 #### At scaled volume — Option A comparison (BD replaces SerpAPI too):
 
@@ -235,11 +238,17 @@ Consider moving to BrightData or manage a proxy rotation, captcha handler (do th
 
 The current $150/mo Production plan is cost-efficient for Fuzzy's present query load. Adding BrightData for the three new sources costs $675/mo fixed (3 × $225), totalling **$845/mo** — still below EnsembleData Gold ($800/mo) in platform coverage, and with better per-record economics ($0.001 vs $0.0036).
 
-### Implementation Priority
+### Implementation Roadmap
 
-1. **Reddit** — Keyword and subreddit discovery; plug into watchdog event matching.
-2. **TikTok** — Keyword discovery (Posts endpoint); use async mode for bulk jobs.
-3. **GoFundMe (optional)** — Swap Puppeteer `connect()` URL to BrightData Scraping Browser WebSocket if stability becomes a concern.
-1. **Instagram** — Search another possible third-party or create a discover algorithm to make the parameters that the API of BD needs, viable in a certain way
+#### Phase 1 — Immediate: Low-Hanging Fruit
+- **Reddit:** Activate BrightData keyword and subreddit discovery; plug into watchdog event matching.
+- **TikTok:** Activate BrightData Posts endpoint for keyword discovery; use async mode for bulk jobs.
+
+#### Phase 2 — Short-term: Instagram Coverage
+- **Instagram:** Deploy the Social Discovery layer (RocketAPI/SociaVault) for keyword-based account discovery. Feed identified profile URLs into BrightData's Instagram Profile API for automated deep-scans of flagged accounts (`follower_count`, `is_verified`, `recent_posts`).
+- **GoFundMe:** Swap Puppeteer `connect()` URL to BrightData Scraping Browser WebSocket. Eliminates proxy rotation and CAPTCHA handling overhead.
+
+#### Phase 3 — Long-term: SerpAPI Re-evaluation
+- Monitor SerpAPI usage against the 15,000 searches/month cap. Once usage consistently hits the ceiling, consolidate Google, Images, and YouTube into BrightData to achieve better per-record economics and single-vendor billing. At that inflection point the cost gap between Option B and Option A shrinks to ~$100–$250/mo.
 
 
